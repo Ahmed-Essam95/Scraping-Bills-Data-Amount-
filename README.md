@@ -1,12 +1,12 @@
 # Billing Amount Automation Bot
 
-This Python automation script uses **Selenium** and **openpyxl** to log into a web application, extract monthly billing amounts for customer accounts, and write the data to Excel. It mimics user behavior to navigate through multiple pages, interact with complex UI elements, and summarize invoice amounts per month.
+This Python automation script uses **Selenium** and **openpyxl** to log into a web application, extract monthly billing amounts for accounts, and write the data to Excel. It mimics user behavior to navigate through multiple pages, interact with complex UI elements, and summarize invoice amounts per month.
 
 ---
 
 ## Project Purpose
 
-Before automation, manually checking and extracting invoice data for hundreds of customer accounts (each with multiple dials) was a time-consuming process. The script now:
+Before automation, manually checking and extracting invoice data for hundreds of cst accounts (each with multiple dials) was a time-consuming process. The script now:
 - **Logs in automatically**
 - **Searches for each account**
 - **Navigates through the billing and financial pages**
