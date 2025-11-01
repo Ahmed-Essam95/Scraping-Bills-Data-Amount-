@@ -13,11 +13,12 @@ from openpyxl.styles import PatternFill, Font
 import time
 import os
 
+start_time = time.time()
 
 
 bills_robot = webdriver.Chrome()
 bills_robot.maximize_window()
-bills_robot.get(" Web App Link ")
+bills_robot.get("Path")
 hold = WebDriverWait( bills_robot ,20)
 
 gear_box = ActionChains(bills_robot)
@@ -30,18 +31,18 @@ def scrolling():
 
 
 def spinner() :
-    WebDriverWait(bills_robot, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "CLASS_NAME")))
+    WebDriverWait(bills_robot, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "loadingOff")))
 
 
 def login_page(username,password) :
     """Login FX"""
     # Check Point To Move.
-    hold.until(EC.visibility_of_element_located((By.XPATH,"//div[@id='name']//p")))
+    hold.until(EC.visibility_of_element_located((By.XPATH,"//div[@id='footer']//p")))
 
     # Enter UserName
-    hold.until(EC.visibility_of_element_located((By.ID,"username"))).send_keys(username)
+    hold.until(EC.visibility_of_element_located((By.ID,"j_username"))).send_keys(username)
     # Enter Password
-    hold.until(EC.visibility_of_element_located((By.ID, "password"))).send_keys(password)
+    hold.until(EC.visibility_of_element_located((By.ID, "j_password"))).send_keys(password)
 
     # Step Tab + Space
     gear_box.send_keys(Keys.TAB).send_keys(Keys.SPACE).perform()
@@ -53,7 +54,7 @@ def login_page(username,password) :
 
 def amount_cycle(acc):
     global account_passed
-    invoices_list = [f"Account {str(acc)}" , "" , "" , "" , "" , "" , "" , "", 0]
+    invoices_list = [f"Account {str(acc)}" , "" , "" , "" , "" , "" , "" , "", "", "", "", "" , "" , "" , 0]
 
     try :
         def page_source(account):
@@ -63,18 +64,18 @@ def amount_cycle(acc):
             hold.until(EC.element_to_be_clickable((By.LINK_TEXT, "Search"))).click()
 
             # select from Drop Menu
-            drop_menu = hold.until(EC.element_to_be_clickable((By.CLASS_NAME, "CLASS_NAME")))
+            drop_menu = hold.until(EC.element_to_be_clickable((By.CLASS_NAME, "SelectDdlM")))
             choice = Select(drop_menu)
             choice.select_by_index(0)
 
             # Enter The Account Number
-            hold.until(EC.visibility_of_element_located((By.ID, "ID"))).send_keys(account)
+            hold.until(EC.visibility_of_element_located((By.ID, "CS_CODE"))).send_keys(account)
 
             # Press Search.
-            hold.until(EC.element_to_be_clickable((By.ID, "ID"))).click()
+            hold.until(EC.element_to_be_clickable((By.ID, "form_formTag_Search_Button"))).click()
 
             # Pres to enter the account
-            hold.until(EC.element_to_be_clickable((By.CLASS_NAME, "CLASS_NAME"))).click()
+            hold.until(EC.element_to_be_clickable((By.CLASS_NAME, "DATblTDALinkTxt"))).click()
 
 
         page_source(acc)
@@ -88,19 +89,19 @@ def amount_cycle(acc):
         hold.until(EC.element_to_be_clickable((By.LINK_TEXT, "Financial overview"))).click()
         spinner()
 
-        open_items_radio = hold.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='XPATH'][1]")))
+        open_items_radio = hold.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='DOCUMENT_STATUS_RB_GROUP'][1]")))
         if not open_items_radio.is_selected() :
             open_items_radio.click()
             spinner()
 
         time.sleep(0.35)
-        hold.until(EC.element_to_be_clickable((By.ID, "ID name"))).click()
+        hold.until(EC.element_to_be_clickable((By.ID, "financialOverviewDocumentsPane_formTag_DOCUMENT_SEARCH_BUTTON"))).click()
         spinner()
 
         scrolling()
 
         time.sleep(0.35)
-        invoices_table = hold.until(EC.visibility_of_all_elements_located((By.XPATH, "//table[@id='Name']/tbody[2]/tr")))
+        invoices_table = hold.until(EC.visibility_of_all_elements_located((By.XPATH, "//table[@id='CTX_DOCUMENTS_TABLE']/tbody[2]/tr")))
         # What if not found ?
 
 
@@ -108,7 +109,7 @@ def amount_cycle(acc):
 
 
         for i in  invoices_table :
-            row_type = i.find_element(By.XPATH, "//table[@id='name']/tbody[2]/tr[1]/td[6]").text
+            row_type = i.find_element(By.XPATH, "//table[@id='CTX_DOCUMENTS_TABLE']/tbody[2]/tr[1]/td[6]").text
             if row_type != "Invoice" :
                 continue
 
@@ -153,8 +154,28 @@ def amount_cycle(acc):
 
 
 
-        invoices_list[7] = len(invoices_table)
-        invoices_list[8] = total_bills
+                if "Jul" in bill_month :
+                    invoices_list[7] = bl_amount_float
+
+                if "Aug" in bill_month :
+                    invoices_list[8] = bl_amount_float
+
+                if "Sep" in bill_month :
+                    invoices_list[9] = bl_amount_float
+
+                if "Oct" in bill_month :
+                    invoices_list[10] = bl_amount_float
+
+                if "Nov" in bill_month :
+                    invoices_list[11] = bl_amount_float
+
+                if "Dec" in bill_month :
+                    invoices_list[12] = bl_amount_float
+
+
+
+        invoices_list[13] = len(invoices_table)
+        invoices_list[14] = total_bills
 
 
         hold.until(EC.element_to_be_clickable((By.LINK_TEXT, "Search"))).click()
@@ -168,7 +189,7 @@ def amount_cycle(acc):
         print(er)
         time.sleep(0.3)
         bills_robot.save_screenshot(f"Bills Error_{acc}.png")
-        time.sleep(0.3)
+        time.sleep(0.15)
         bills_robot.refresh()
 
         try:
@@ -196,23 +217,23 @@ def amount_cycle(acc):
 # Start Engine Sequence
 sequence = 0
 # File Handling || Source Phase--1
-source_file_path = r" Path .xlsx"
+source_file_path = r"Path"
 source_wb = excel.load_workbook(source_file_path)
-source_sheet = source_wb["accounts list"]
+source_sheet = source_wb["Sheet1"]
 
 
 # File Handling || Destination Phase--2
-destination_file_path = r" Path .xlsx"
+destination_file_path = r"path"
 destination_wb = excel.load_workbook(destination_file_path)
 destination_sheet = destination_wb["Sheet1"]
 
 
 
 # Login FX
-login_page("User Name "," Password ")
+login_page("username","password")
 
-
-for profile in range( 2 , source_sheet.max_row+1 ) :
+# source_sheet.max_row+1
+for profile in range( 2 , 572 ) :
 
     account_number = str(source_sheet.cell(profile, 1).value)
 
@@ -241,7 +262,10 @@ for profile in range( 2 , source_sheet.max_row+1 ) :
 
 
 print("Saving Data....")
-time.sleep(2)
 bills_robot.quit()
-time.sleep(2)
 print("Task has been performed.")
+
+
+print(f"Task Finished, with duration { ( time.time() - start_time ) / 60 }")
+
+
