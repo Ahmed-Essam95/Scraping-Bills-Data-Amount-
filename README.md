@@ -19,12 +19,19 @@ This has saved over **95% of the manual task time**.
 
 ## Features
 
-- Automated login and secure navigation
-- Interacts with dropdowns, buttons, radio fields, and tables
-- Scrolls and handles dynamic web elements
-- Extracts invoice data across up to 110+ web pages
-- Writes monthly breakdown and totals into Excel
-- Tracks processing status (Done / Not Done)
+🔐 Automated login and secure navigation — logs into the billing portal and navigates safely through multiple sections.
+
+🧭 Full web interaction — handles dropdown menus, buttons, radio fields, and tables with dynamic content.
+
+⚙️ Smart scrolling & wait management — manages page loading delays and ensures all data is captured accurately.
+
+📄 Invoice data extraction — scrapes billing and invoice details across 110+ pages with structured logic.
+
+📊 Excel integration (OpenPyXL) — writes monthly breakdowns, invoice totals, and account summaries directly into Excel.
+
+🔁 Real-time progress tracking — updates each account status as “Done / Not Done” in the source sheet.
+
+🧠 Robust error handling — takes screenshots and refreshes sessions automatically if errors occur.
 
 ---
 
